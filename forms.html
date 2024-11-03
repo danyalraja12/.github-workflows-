@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Shape with PyScript</title>
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <style>
+        body {
+            background-color: black;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        #heartCanvas {
+            border: 1px solid #333;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="heartCanvas" width="800" height="800"></canvas>
+
+<py-script>
+import math
+from js import document
+
+def heart(n):
+    return 15 * math.sin(n) ** 3
+
+def heartb(n):
+    return 12 * math.cos(n) - 5 * math.cos(2 * n) - 2 * math.cos(3 * n) - math.cos(4 * n)
+
+# Get the canvas and its context
+canvas = document.getElementById("heartCanvas")
+ctx = canvas.getContext("2d")
+
+# Set the background color
+ctx.fillStyle = "black"
+ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+# Draw the heart shape
+ctx.fillStyle = "red"
+ctx.beginPath()
+
+for i in range(800):
+    x = heart(i * 0.02) * 20 + canvas.width / 2  # Adjust scaling
+    y = -heartb(i * 0.02) * 20 + canvas.height / 2  # Flip y-axis for correct orientation
+    if i == 0:
+        ctx.moveTo(x, y)  # Move to the starting point
+    else:
+        ctx.lineTo(x, y)  # Draw line to the next point
+
+ctx.closePath()
+ctx.fill()  # Fill the heart shape
+</py-script>
+
+</body>
+</html>
